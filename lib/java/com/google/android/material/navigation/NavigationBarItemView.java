@@ -36,6 +36,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+
+import androidx.appcompat.graphics.drawable.SeslRecoilDrawable;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TooltipCompat;
@@ -155,6 +157,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   private int activeIndicatorMarginHorizontal = 0;
 
   @Nullable private BadgeDrawable badgeDrawable;
+
+  private boolean isNeedToSkipRefreshDrawable;//sesl7
 
   public NavigationBarItemView(@NonNull Context context) {
     this(context, null, NavigationBarView.SESL_TYPE_ICON_LABEL);
@@ -1323,4 +1327,23 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     }
   }
   //sesl
+
+  //Sesl7
+  @Override
+  public final void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    if (getBackground() instanceof SeslRecoilDrawable) {
+      isNeedToSkipRefreshDrawable = true;
+    }
+  }
+
+  @Override
+  public final void refreshDrawableState() {
+    super.refreshDrawableState();
+    if (isNeedToSkipRefreshDrawable && getStateListAnimator() != null) {
+      getStateListAnimator().jumpToCurrentState();
+      isNeedToSkipRefreshDrawable = false;
+    }
+  }
+  //sesl7
 }
