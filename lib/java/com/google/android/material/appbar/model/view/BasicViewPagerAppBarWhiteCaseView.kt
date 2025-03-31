@@ -2,18 +2,12 @@ package com.google.android.material.appbar.model.view
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.RequiresApi
-import androidx.appcompat.util.theme.SeslThemeResourceColor.OpenThemeResourceColor
-import androidx.appcompat.util.theme.SeslThemeResourceColor.ThemeResourceColor
-import androidx.appcompat.util.theme.SeslThemeResourceHelper
 import androidx.appcompat.util.theme.SeslThemeResourceHelper.getColorInt
-import androidx.appcompat.widget.SeslIndicator
-import androidx.viewpager2.widget.ViewPager2
+import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.OpenThemeResourceColor
+import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.ThemeResourceColor
 import com.google.android.material.R
-import kotlin.jvm.internal.DefaultConstructorMarker
-import kotlin.jvm.internal.Intrinsics
 
 @RequiresApi(23)
 abstract class BasicViewPagerAppBarWhiteCaseView @JvmOverloads constructor(
