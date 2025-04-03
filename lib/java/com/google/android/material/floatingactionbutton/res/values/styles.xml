@@ -62,16 +62,11 @@
     <item name="android:minWidth">@dimen/mtrl_extended_fab_min_width</item>
     <item name="android:paddingTop">@dimen/mtrl_extended_fab_top_padding</item>
     <item name="android:paddingBottom">@dimen/mtrl_extended_fab_bottom_padding</item>
-    <item name="android:paddingStart" tools:ignore="NewApi">
-      @dimen/mtrl_extended_fab_start_padding
-    </item>
-    <item name="android:paddingEnd" tools:ignore="NewApi">
-      @dimen/mtrl_extended_fab_end_padding
-    </item>
+    <item name="android:paddingStart">@dimen/mtrl_extended_fab_start_padding</item>
+    <item name="android:paddingEnd">@dimen/mtrl_extended_fab_end_padding</item>
     <item name="android:paddingLeft">@dimen/mtrl_extended_fab_start_padding</item>
     <item name="android:paddingRight">@dimen/mtrl_extended_fab_end_padding</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/mtrl_extended_fab_state_list_animator
+    <item name="android:stateListAnimator">@animator/mtrl_extended_fab_state_list_animator
     </item>
     <item name="android:textColor">@color/mtrl_fab_icon_text_color_selector</item>
     <item name="backgroundTint">@color/mtrl_fab_bg_color_selector</item>
@@ -93,12 +88,8 @@
 
   <style name="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
     <item name="android:gravity">start|center_vertical</item>
-    <item name="android:paddingStart" tools:ignore="NewApi">
-      @dimen/mtrl_extended_fab_start_padding_icon
-    </item>
-    <item name="android:paddingEnd" tools:ignore="NewApi">
-      @dimen/mtrl_extended_fab_end_padding_icon
-    </item>
+    <item name="android:paddingStart">@dimen/mtrl_extended_fab_start_padding_icon</item>
+    <item name="android:paddingEnd">@dimen/mtrl_extended_fab_end_padding_icon</item>
     <item name="android:paddingLeft">@dimen/mtrl_extended_fab_start_padding_icon</item>
     <item name="android:paddingRight">@dimen/mtrl_extended_fab_end_padding_icon</item>
   </style>
@@ -116,7 +107,7 @@
     <item name="pressedTranslationZ">@dimen/m3_comp_fab_primary_pressed_container_elevation</item>
     <item name="fabCustomSize">@dimen/m3_comp_fab_primary_container_height</item>
     <item name="maxImageSize">@dimen/m3_comp_fab_primary_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_container_shape</item>
+    <item name="shapeAppearance">?shapeAppearanceCornerLarge</item>
     <item name="shapeAppearanceOverlay">@null</item>
     <!--Remove the motion spec and allow FloatingActionButtonImpl to create a theme-based animation-->
     <item name="showMotionSpec">@null</item>
@@ -144,7 +135,7 @@
   <style name="Base.Widget.Material3.FloatingActionButton.Small" parent="Base.Widget.Material3.FloatingActionButton">
     <item name="fabCustomSize">@dimen/m3_comp_fab_primary_small_container_height</item>
     <item name="maxImageSize">@dimen/m3_comp_fab_primary_small_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_small_container_shape</item>
+    <item name="shapeAppearance">?shapeAppearanceCornerMedium</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -169,7 +160,7 @@
   <style name="Base.Widget.Material3.FloatingActionButton.Large" parent="Base.Widget.Material3.FloatingActionButton">
     <item name="fabCustomSize">@dimen/m3_comp_fab_primary_large_container_height</item>
     <item name="maxImageSize">@dimen/m3_comp_fab_primary_large_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_large_container_shape</item>
+    <item name="shapeAppearance">?shapeAppearanceCornerExtraLarge</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -192,23 +183,23 @@
   <!-- FAB Overlays -->
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Primary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_primary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_primary_icon_color</item>
+    <item name="colorContainer">?colorPrimaryContainer</item>
+    <item name="colorOnContainer">?colorOnPrimaryContainer</item>
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Secondary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_secondary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_secondary_icon_color</item>
+    <item name="colorContainer">?colorSecondaryContainer</item>
+    <item name="colorOnContainer">?colorOnSecondaryContainer</item>
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Tertiary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_tertiary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_tertiary_icon_color</item>
+    <item name="colorContainer">?colorTertiaryContainer</item>
+    <item name="colorOnContainer">?colorOnTertiaryContainer</item>
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Surface" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_surface_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_surface_icon_color</item>
+    <item name="colorContainer">?colorSurfaceContainerHigh</item>
+    <item name="colorOnContainer">?colorPrimary</item>
   </style>
 
   <!--
@@ -229,12 +220,10 @@
     <item name="rippleColor">@color/m3_efab_ripple_color_selector</item>
     <item name="android:minHeight">@dimen/m3_comp_extended_fab_primary_container_height</item>
     <item name="elevation">@dimen/m3_comp_extended_fab_primary_container_elevation</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_extended_fab_state_list_animator
-    </item>
+    <item name="android:stateListAnimator">@animator/m3_extended_fab_state_list_animator</item>
     <item name="iconSize">@dimen/m3_comp_extended_fab_primary_icon_size</item>
-    <item name="android:textAppearance">@macro/m3_comp_extended_fab_primary_label_text_type</item>
-    <item name="shapeAppearance">@macro/m3_comp_extended_fab_primary_container_shape</item>
+    <item name="android:textAppearance">?textAppearanceLabelLarge</item>
+    <item name="shapeAppearance">?shapeAppearanceCornerLarge</item>
     <item name="shapeAppearanceOverlay">@null</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="showMotionSpec">@animator/m3_extended_fab_show_motion_spec</item>
@@ -262,14 +251,10 @@
   <!-- M3 Icon Extended FABs -->
 
   <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Icon" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
-    <item name="android:paddingStart" tools:ignore="NewApi">
-      @dimen/m3_extended_fab_start_padding
-    </item>
+    <item name="android:paddingStart">@dimen/m3_extended_fab_start_padding</item>
     <item name="android:paddingLeft">@dimen/m3_extended_fab_start_padding</item>
     <item name="android:paddingTop">@dimen/m3_extended_fab_top_padding</item>
-    <item name="android:paddingEnd" tools:ignore="NewApi">
-      @dimen/m3_extended_fab_end_padding
-    </item>
+    <item name="android:paddingEnd">@dimen/m3_extended_fab_end_padding</item>
     <item name="android:paddingRight">@dimen/m3_extended_fab_end_padding</item>
     <item name="android:paddingBottom">@dimen/m3_extended_fab_bottom_padding</item>
     <item name="iconPadding">@dimen/m3_extended_fab_icon_padding</item>
@@ -294,23 +279,23 @@
   <!-- Extended FAB Overlays -->
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary" parent="">
-    <item name="colorContainer">@macro/m3_comp_extended_fab_primary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_extended_fab_primary_icon_color</item>
+    <item name="colorContainer">?colorPrimaryContainer</item>
+    <item name="colorOnContainer">?colorOnPrimaryContainer</item>
   </style>
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Secondary" parent="">
-    <item name="colorContainer">@macro/m3_comp_extended_fab_secondary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_extended_fab_secondary_icon_color</item>
+    <item name="colorContainer">?colorSecondaryContainer</item>
+    <item name="colorOnContainer">?colorOnSecondaryContainer</item>
   </style>
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Tertiary" parent="">
-    <item name="colorContainer">@macro/m3_comp_extended_fab_tertiary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_extended_fab_tertiary_icon_color</item>
+    <item name="colorContainer">?colorTertiaryContainer</item>
+    <item name="colorOnContainer">?colorOnTertiaryContainer</item>
   </style>
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface" parent="">
-    <item name="colorContainer">@macro/m3_comp_extended_fab_surface_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_extended_fab_surface_icon_color</item>
+    <item name="colorContainer">?colorSurfaceContainerHigh</item>
+    <item name="colorOnContainer">?colorPrimary</item>
   </style>
 
 </resources>
