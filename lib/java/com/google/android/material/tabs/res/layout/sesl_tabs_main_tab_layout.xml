@@ -39,6 +39,8 @@
         android:maxLines="1"
         android:paddingBottom="@dimen/sesl_tablayout_title_hightlight_padding_bottom"
         android:paddingHorizontal="@dimen/sesl_tablayout_title_hightlight_padding_horizontal"
+        android:paddingLeft="@dimen/sesl_tablayout_title_hightlight_padding_horizontal"
+        android:paddingRight="@dimen/sesl_tablayout_title_hightlight_padding_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
