@@ -26,7 +26,7 @@
     <color name="sesl_navigation_bar_ripple_light">#08000000</color>
 
     <color name="sesl_navigation_bar_text_dark">@color/sesl_text5_dark</color>
-    <color name="sesl_navigation_bar_text_disable_dark">#66578fff</color>
+    <color name="sesl_navigation_bar_text_disable_dark">#66598fff</color>
     <color name="sesl_navigation_bar_text_disable_light">#66376fde</color>
     <color name="sesl_navigation_bar_text_light">@color/sesl_text4_light</color>
     <color name="sesl_navigation_bar_text_text_dark">@color/sesl_blue_dark_color_dark</color>
