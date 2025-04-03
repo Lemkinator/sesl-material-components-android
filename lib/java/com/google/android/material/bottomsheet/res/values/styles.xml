@@ -28,10 +28,8 @@
 
   <style name="Widget.Design.BottomSheet.Modal" parent="android:Widget">
     <item name="enforceMaterialTheme">false</item>
-    <item name="android:background">?android:attr/colorBackground</item>
-    <item name="android:elevation" tools:ignore="NewApi">
-      @dimen/design_bottom_sheet_modal_elevation
-    </item>
+    <item name="android:background">?android:colorBackground</item>
+    <item name="android:elevation">@dimen/design_bottom_sheet_modal_elevation</item>
     <item name="behavior_peekHeight">auto</item>
     <item name="behavior_hideable">true</item>
     <item name="behavior_skipCollapsed">false</item>
@@ -47,16 +45,12 @@
     <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.BottomSheet</item>
     <item name="backgroundTint">?attr/colorSurface</item>
-    <item name="android:elevation" tools:ignore="NewApi">
-      @dimen/design_bottom_sheet_elevation
-    </item>
+    <item name="android:elevation">@dimen/design_bottom_sheet_elevation</item>
     <item name="android:maxWidth">@dimen/material_bottom_sheet_max_width</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet">
-    <item name="android:elevation" tools:ignore="NewApi">
-      @dimen/design_bottom_sheet_modal_elevation
-    </item>
+    <item name="android:elevation">@dimen/design_bottom_sheet_modal_elevation</item>
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialComponents.BottomSheet" parent="">
@@ -66,21 +60,21 @@
 
   <!-- Style for the M3 Bottom Sheet. -->
   <style name="Widget.Material3.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_bottom_sheet_elevation</item>
+    <item name="android:elevation">@dimen/m3_bottom_sheet_elevation</item>
     <item name="marginLeftSystemWindowInsets">true</item>
     <item name="marginRightSystemWindowInsets">true</item>
     <item name="paddingBottomSystemWindowInsets">true</item>
     <item name="paddingTopSystemWindowInsets">true</item>
     <item name="paddingLeftSystemWindowInsets">false</item>
     <item name="paddingRightSystemWindowInsets">false</item>
-    <item name="shapeAppearance">@macro/m3_comp_sheet_bottom_docked_container_shape</item>
+    <item name="shapeAppearance">?shapeAppearanceCornerExtraLarge</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Top</item>
     <item name="shouldRemoveExpandedCorners">false</item>
-    <item name="backgroundTint">@macro/m3_comp_sheet_bottom_docked_container_color</item>
+    <item name="backgroundTint">?colorSurfaceContainerLow</item>
   </style>
 
-  <style name="Widget.Material3.BottomSheet.Modal">
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_bottom_sheet_modal_elevation</item>
+  <style name="Widget.Material3.BottomSheet.Modal" parent="Widget.Material3.BottomSheet">
+    <item name="android:elevation">@dimen/m3_bottom_sheet_modal_elevation</item>
   </style>
 
   <style name="Animation.Material3.BottomSheetDialog" parent="Animation.AppCompat.Dialog">
@@ -96,6 +90,6 @@
     <item name="android:minHeight">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:paddingBottom">@dimen/m3_bottom_sheet_drag_handle_bottom_padding</item>
     <item name="srcCompat">@drawable/m3_bottom_sheet_drag_handle</item>
-    <item name="tint">@macro/m3_comp_sheet_bottom_docked_drag_handle_color</item>
+    <item name="tint">?colorOnSurfaceVariant</item>
   </style>
 </resources>
