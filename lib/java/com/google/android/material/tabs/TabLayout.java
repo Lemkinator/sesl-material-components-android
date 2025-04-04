@@ -46,6 +46,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.provider.Settings;
@@ -217,7 +218,7 @@ public class TabLayout extends HorizontalScrollView {
   private int mBadgeTextColor = Color.WHITE;
   private int mCurrentTouchSlop;
   private final int mDefaultTouchSlop;
-  private int mDepthStyle = DEPTH_TYPE_MAIN;
+  private int mDepthStyle;
   private final int mFirstTabGravity;
   private int mIconTextGap = -1;
   private int mMaxTouchSlop;
@@ -722,6 +723,8 @@ public class TabLayout extends HorizontalScrollView {
         mSubTabSubTextColors = MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_seslTabSubTextColor);
       }
 
+      mDepthStyle = a.getInt(R.styleable.TabLayout_seslTabStyle, DEPTH_TYPE_MAIN);
+
       if (a.hasValue(R.styleable.TabLayout_seslTabSelectedSubTextColor)) {
         mSubTabSubTextColors = createColorStateList(
             mSubTabSubTextColors.getDefaultColor(),
@@ -802,6 +805,13 @@ public class TabLayout extends HorizontalScrollView {
       mContentResolver = context.getContentResolver();
       if (background instanceof ColorDrawable) {
         mBackgroundColorDrawable = (ColorDrawable) background;
+      }
+
+      if (mDepthStyle == DEPTH_TYPE_SUB) {
+        tabTextColors = getResources().getColorStateList(
+                SeslMisc.isLightTheme(getContext())
+                        ? R.color.sesl_tablayout_subtab_text_color_light
+                        : R.color.sesl_tablayout_subtab_text_color_dark);
       }
     } catch (Throwable th) {
       seslArray.recycle();
@@ -4311,12 +4321,20 @@ public class TabLayout extends HorizontalScrollView {
   private void setShowButtonShape(@NonNull TabView tabView) {
     int color;
     ColorStateList tabTextColors = getTabTextColors();
-    if (isShowButtonShapesEnabled()) {
+    if (mDepthStyle == DEPTH_TYPE_MAIN && isShowButtonShapesEnabled()) {
+      if (Build.VERSION.SDK_INT <= 26) {
+        tabView.setShowButtonShape(0, tabTextColors);
+        return;
+      }
+
       ColorDrawable colorDrawable = this.mBackgroundColorDrawable;
       if (colorDrawable != null) {
         color = colorDrawable.getColor();
       } else {
-        color = ResourcesCompat.getColor(getResources(), SeslMisc.isLightTheme(getContext()) ? R.color.sesl_bottom_navigation_background_light : R.color.sesl_bottom_navigation_background_dark, null);
+        color = ResourcesCompat.getColor(getResources(),
+                SeslMisc.isLightTheme(getContext())
+                        ? R.color.sesl_bottom_navigation_background_light
+                        : R.color.sesl_bottom_navigation_background_dark, null);
       }
       tabView.setShowButtonShape(color, tabTextColors);
     }

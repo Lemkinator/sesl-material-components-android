@@ -133,6 +133,11 @@
     <attr name="seslTabSubTextAppearance" format="reference" />
     <attr name="seslTabSubTextColor" format="color" />
     <attr name="seslTabSelectedSubTextColor" format="color" />
+    <attr name="seslTabStyle">
+      <enum name="Main" value="1" />
+      <enum name="Sub" value="2" />
+      <enum name="Custom" value="3" />
+    </attr>
     <!--sesl-->
   </declare-styleable>
 
