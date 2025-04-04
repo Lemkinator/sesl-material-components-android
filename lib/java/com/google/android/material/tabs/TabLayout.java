@@ -201,9 +201,6 @@ import java.util.Iterator;
 @ViewPager.DecorView
 public class TabLayout extends HorizontalScrollView {
   // Sesl
-  private static final int ANIM_SHOW_DURATION = 350;
-  private static final int ANIM_HIDE_DURATION = 400;
-  private static final float ANIM_RIPPLE_MINOR_SCALE = 0.95f;
   @Dimension(unit = Dimension.DP)
   private static final int SESL_DEFAULT_HEIGHT = 60;
   private static final int SESL_SUB_DEPTH_DEFAULT_HEIGHT = 56;
@@ -213,10 +210,8 @@ public class TabLayout extends HorizontalScrollView {
   private static final int BADGE_TYPE_UNKNOWN = -1;
   private static final int BADGE_TYPE_N = 1;
   private static final int BADGE_TYPE_DOT = 2;
-  private static final int BADGE_N_TEXT_SIZE = 11;
   private final Typeface mBoldTypeface;
   private final Typeface mNormalTypeface;
-  // ColorStateList mSubTabTextColors;
   ColorStateList mSubTabSubTextColors;
   private int mBadgeColor = Color.WHITE;
   private int mBadgeTextColor = Color.WHITE;
@@ -235,7 +230,6 @@ public class TabLayout extends HorizontalScrollView {
   int mSubTabTextSize;
   private final int mTabMinSideSpace;
 
-  private boolean mIsChangedGravityByLocal;
   private boolean mIsOverScreen = false;
   private boolean mIsScaledTextSizeType = false;
   private int mTabSelectedIndicatorColor;
@@ -245,14 +239,14 @@ public class TabLayout extends HorizontalScrollView {
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_TabLayout;
 
-  @Dimension(unit = Dimension.DP)
-  private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72;
+  //@Dimension(unit = Dimension.DP)
+  //private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72;
 
   @Dimension(unit = Dimension.DP)
   static final int DEFAULT_GAP_TEXT_ICON = 8;
 
-  @Dimension(unit = Dimension.DP)
-  private static final int DEFAULT_HEIGHT = 48;
+  //@Dimension(unit = Dimension.DP)
+  //private static final int DEFAULT_HEIGHT = 48;
 
   @Dimension(unit = Dimension.DP)
   private static final int TAB_MIN_WIDTH_MARGIN = 56;
@@ -3851,9 +3845,7 @@ public class TabLayout extends HorizontalScrollView {
               tabViewIndicator.setShow();
             }
           }
-          if (mDepthStyle == DEPTH_TYPE_MAIN) {
-            //showMainTabTouchBackground(MotionEvent.ACTION_CANCEL);
-          } else {
+          if (mDepthStyle != DEPTH_TYPE_MAIN) {
             if (mIndicatorView != null && mIndicatorView.isSelected()) {
               mIndicatorView.setReleased();
             }
@@ -3863,74 +3855,6 @@ public class TabLayout extends HorizontalScrollView {
 
       return super.onTouchEvent(motionEvent);
     }
-
-    private void showMainTabTouchBackground(int action) {
-      if (mMainTabTouchBackground != null
-          && mDepthStyle == DEPTH_TYPE_MAIN && tabBackgroundResId == 0) {
-        mMainTabTouchBackground.setAlpha(1f);
-
-        AnimationSet animSet = new AnimationSet(true);
-        animSet.setFillAfter(true);
-
-        switch (action) {
-          case MotionEvent.ACTION_DOWN:
-            AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
-            fadeIn.setDuration(100);
-            fadeIn.setFillAfter(true);
-            animSet.addAnimation(fadeIn);
-
-            ScaleAnimation scaleAnim
-                = new ScaleAnimation(ANIM_RIPPLE_MINOR_SCALE, 1f,
-                ANIM_RIPPLE_MINOR_SCALE, 1f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-            scaleAnim.setDuration(ANIM_SHOW_DURATION);
-            scaleAnim.setInterpolator(SeslAnimationUtils.SINE_IN_OUT_80);
-            scaleAnim.setFillAfter(true);
-            animSet.addAnimation(scaleAnim);
-
-            mMainTabTouchBackground.startAnimation(animSet);
-            break;
-          case MotionEvent.ACTION_UP:
-          case MotionEvent.ACTION_CANCEL:
-            if (mMainTabTouchBackground.getAnimation() != null) {
-              if (mMainTabTouchBackground.getAnimation().hasEnded()) {
-                AlphaAnimation fadeOut = new AlphaAnimation(1f, 0f);
-                fadeOut.setDuration(ANIM_HIDE_DURATION);
-                fadeOut.setFillAfter(true);
-                animSet.addAnimation(fadeOut);
-
-                mMainTabTouchBackground.startAnimation(animSet);
-              } else {
-                mMainTabTouchBackground.getAnimation().setAnimationListener(
-                    new Animation.AnimationListener() {
-                      @Override
-                      public void onAnimationStart(Animation animation) {
-                      }
-
-                      @Override
-                      public void onAnimationRepeat(Animation animation) {
-                      }
-
-                      @Override
-                      public void onAnimationEnd(Animation animation) {
-                        AnimationSet set = new AnimationSet(true);
-                        set.setFillAfter(true);
-                        AlphaAnimation fadeOut = new AlphaAnimation(1f, 0f);
-                        fadeOut.setDuration(ANIM_HIDE_DURATION);
-                        fadeOut.setFillAfter(true);
-                        set.addAnimation(fadeOut);
-                        mMainTabTouchBackground.startAnimation(fadeOut);
-                      }
-                    });
-              }
-            }
-            break;
-        }
-      }
-      //sesl
-    }
-
 
     @Override
     public void drawableStateChanged() {
