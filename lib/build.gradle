@@ -24,7 +24,7 @@ dependencies {
   api compatibility("transition")
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
-  implementation 'androidx.core:core-ktx:1.13.1'
+  implementation 'androidx.core:core-ktx:1.15.0'
 
   annotationProcessor compatibility("resourceInspectionProcessor")
 
