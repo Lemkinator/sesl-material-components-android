@@ -1832,7 +1832,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     }
 
     if (!mSetCustomProportion) {
-      mHeightProportion = ResourcesCompat.getFloat(mResources, R.dimen.sesl_appbar_height_proportion);
+      mHeightProportion = SeslAppBarHelper.getAppBarProPortion(getContext());
     }
 
     updateInternalHeight();
@@ -1944,7 +1944,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   private int getWindowHeight() {
-    return mResources.getDisplayMetrics().heightPixels;
+    return mIsActivatedImmersiveScroll ? mResources.getDisplayMetrics().heightPixels : SeslAppBarHelper.getScreenHeight(this);
   }
 
   @Override
