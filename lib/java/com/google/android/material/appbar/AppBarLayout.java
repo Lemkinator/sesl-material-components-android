@@ -57,7 +57,6 @@ import android.view.WindowInsetsAnimation;
 import android.view.animation.Interpolator;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 
 import androidx.annotation.ColorInt;
@@ -76,7 +75,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.util.SeslMisc;
 import androidx.coordinatorlayout.widget.AppBarLayoutBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.ObjectsCompat;
@@ -1832,7 +1830,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     }
 
     if (!mSetCustomProportion) {
-      mHeightProportion = SeslAppBarHelper.getAppBarProPortion(getContext());
+      mHeightProportion = SeslAppBarHelper.Companion.getAppBarProPortion(getContext());//sesl7
     }
 
     updateInternalHeight();
@@ -1944,7 +1942,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   private int getWindowHeight() {
-    return mIsActivatedImmersiveScroll ? mResources.getDisplayMetrics().heightPixels : SeslAppBarHelper.getScreenHeight(this);
+    return mIsActivatedImmersiveScroll
+            ? mResources.getDisplayMetrics().heightPixels
+            : SeslAppBarHelper.Companion.getScreenHeight(this);//sesl7
   }
 
   @Override

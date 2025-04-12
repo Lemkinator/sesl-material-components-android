@@ -2,13 +2,11 @@ package com.google.android.material.appbar
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.os.Build
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
-import android.view.WindowMetrics
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.Insets
@@ -17,12 +15,16 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.R
 import org.jetbrains.annotations.NotNull
 
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+
+//Added in sesl7
 class SeslAppBarHelper {
 
     companion object {
         const val TAG: String = "SeslAppBarHelper"
 
-        @JvmStatic
         fun getAppBarProPortion(@NotNull context: Context): Float {
             val resources = context.resources
             val configuration: Configuration = resources.configuration
@@ -53,7 +55,6 @@ class SeslAppBarHelper {
             }
         }
 
-        @JvmStatic
         @RequiresApi(34)
         fun getFullWindowHeightDp(@NotNull context: Context): Float {
             val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -66,7 +67,6 @@ class SeslAppBarHelper {
             return deriveDimension
         }
 
-        @JvmStatic
         fun getScreenHeight(@NotNull view: View): Int {
             val context: Context = view.context
             if (Build.VERSION.SDK_INT < 35) {

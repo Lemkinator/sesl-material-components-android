@@ -530,7 +530,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (collapsingTitleEnabled) {
       collapsingTextHelper.maybeUpdateFontWeightAdjustment(newConfig);
     }
-    mHeightProportion = SeslAppBarHelper.getAppBarProPortion(getContext());
+    mHeightProportion = SeslAppBarHelper.Companion.getAppBarProPortion(getContext());//sesl7
     updateDefaultHeight();
     updateTitleLayout();
     //sesl
@@ -2107,7 +2107,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private void updateTitleLayout() {
     final Resources resources = getResources();
 
-    mHeightProportion = SeslAppBarHelper.getAppBarProPortion(getContext());
+    mHeightProportion = SeslAppBarHelper.Companion.getAppBarProPortion(getContext());//sesl7
 
     if (mTitleEnabled) {
       TypedArray a

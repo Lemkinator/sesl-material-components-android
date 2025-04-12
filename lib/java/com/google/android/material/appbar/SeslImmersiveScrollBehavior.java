@@ -815,7 +815,7 @@ public final class SeslImmersiveScrollBehavior extends AppBarLayout.Behavior {
 
       final Resources res = mContext.getResources();
 
-      float heightProportion = SeslAppBarHelper.getAppBarProPortion(mContext);
+      float heightProportion = SeslAppBarHelper.Companion.getAppBarProPortion(mContext);//sesl7
 
 
       float immHeightProportion = 0f;
