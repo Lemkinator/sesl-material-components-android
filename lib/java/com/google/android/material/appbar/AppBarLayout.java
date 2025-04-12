@@ -226,7 +226,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       return mCurrentState;
     }
   }
-  private boolean mHasSuggestion = false;//sesl7
+  private boolean mHasSuggestion = false;//sesl7 - for log use
   // sesl
 
   static final int PENDING_ACTION_NONE = 0x0;
@@ -1870,8 +1870,70 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   private void updateInternalHeight() {
-    final int windowHeight = getWindowHeight();
+    updateInternalHeight(calculateInternalHeight());
+  }
 
+  private void updateInternalHeight(int height) {
+    boolean useCustomHeight = mUseCustomHeight;
+    if (!useCustomHeight || mSetCustomProportion || mSetCustomHeight) {
+      try {
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) getLayoutParams();
+        lp.height = height;
+        setLayoutParams(lp);
+      } catch (ClassCastException e) {
+        Log.e(TAG, Log.getStackTraceString(e));
+      }
+    }
+
+    if (Build.VERSION.SDK_INT > 30 && mIsActivatedImmersiveScroll) {
+      String message = "[updateInternalHeight]" +
+              " mUseCustomHeight : " + mUseCustomHeight +
+              ", mSetCustomProportion : " + mSetCustomProportion +
+              ", mSetCustomHeight : " + mSetCustomHeight +
+              ", mIsImmersiveScroll : " + true +
+              ", mIsSetByUser : " + mIsActivatedByUser +
+              ", mImmersiveTopInset : " + mImmersiveTopInset;
+
+      WindowInsets rootWindowInsets = getRootView().getRootWindowInsets();
+      if (rootWindowInsets != null) {
+        message += "\n" + rootWindowInsets;
+      }
+      Log.i(TAG, message);
+    }
+  }
+
+  private int calculateInternalHeight() {
+    final int windowHeight = getWindowHeight();
+    float collapsedHeight = windowHeight * getHeightPercent();
+    if (collapsedHeight == 0.0f) {
+      updateInternalCollapsedHeightOnce();
+      collapsedHeight = seslGetCollapsedHeight();
+    }
+
+    String message = "[calculateInternalHeight]" +
+            " orientation:" + mResources.getConfiguration().orientation +
+            ", density:" + mResources.getConfiguration().densityDpi +
+            ", windowHeight:" + windowHeight +
+            ", heightDp:" + collapsedHeight;
+
+    if (mUseCustomHeight) {
+      if (mSetCustomProportion) {
+        message += ", [1]mCustomHeightProportion : " + mCustomHeightProportion;
+      } else if (mSetCustomHeight) {
+        collapsedHeight = getImmersiveTopInset() + mCustomHeight;
+        message += ", [2]CustomHeight : " + mCustomHeight;
+      }
+    } else {
+      message += ", [3]mHeightProportion : " + mHeightProportion;
+    }
+
+    if (mIsActivatedImmersiveScroll) {
+      Log.i(TAG, message);
+    }
+    return (int) collapsedHeight;
+  }
+
+  private float getHeightPercent() {
     final float proportion;
     if (mUseCustomHeight) {
       if (mCustomHeightProportion != 0.0f) {
@@ -1882,55 +1944,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     } else {
       proportion = mHeightProportion;
     }
-
-    float collapsedHeight = ((float) windowHeight) * proportion;
-    if (collapsedHeight == 0.0f) {
-      updateInternalCollapsedHeightOnce();
-      collapsedHeight = seslGetCollapsedHeight();
-    }
-
-    CoordinatorLayout.LayoutParams lp;
-    try {
-      lp = (CoordinatorLayout.LayoutParams) getLayoutParams();
-    } catch (ClassCastException e) {
-      lp = null;
-      Log.e(TAG, Log.getStackTraceString(e));
-    }
-
-    String message = "[updateInternalHeight] orientation : " + mResources.getConfiguration().orientation
-        + ", density : " + mResources.getConfiguration().densityDpi
-        + ", windowHeight : " + windowHeight;
-    if (mUseCustomHeight) {
-      if (mSetCustomProportion) {
-        if (lp != null) {
-          lp.height = (int) collapsedHeight;
-          setLayoutParams(lp);
-          message += ", [1]updateInternalHeight: lp.height : " + lp.height
-              + ", mCustomHeightProportion : " + mCustomHeightProportion;
-        }
-      } else if (mSetCustomHeight && lp != null) {
-        lp.height = mCustomHeight + getImmersiveTopInset();
-        setLayoutParams(lp);
-        message += ", [2]updateInternalHeight: CustomHeight : "
-            + mCustomHeight + "lp.height : " + lp.height;
-      }
-    } else if (lp != null) {
-      lp.height = (int) collapsedHeight;
-      setLayoutParams(lp);
-      message += ", [3]updateInternalHeight: lp.height : " + lp.height
-          + ", mHeightProportion : " + mHeightProportion;
-    }
-    if (VERSION.SDK_INT >= 30) {
-      message += " , mIsImmersiveScroll : " + mIsActivatedImmersiveScroll
-          + " , mIsSetByUser : " + mIsActivatedByUser;
-
-      WindowInsets rootWindowInsets = getRootView().getRootWindowInsets();
-      if (rootWindowInsets != null) {
-        message = message + "\n" + rootWindowInsets;
-      }
-    }
-    Log.i(TAG, message);
+    return proportion;
   }
+
 
   private float getDifferImmHeightRatio() {
     float windowHeight = getWindowHeight();
