@@ -411,7 +411,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       mCustomHeightProportion = DEFAULT_HEIGHT_RATIO_TO_SCREEN;
     }
 
-    mHeightProportion = ResourcesCompat.getFloat(mResources, R.dimen.sesl_appbar_height_proportion);
+    mHeightProportion = SeslAppBarHelper.Companion.getAppBarProPortion(getContext());//sesl7
 
     if (a.hasValue(R.styleable.AppBarLayout_seslUseCustomPadding)) {
       mUseCustomPadding = a.getBoolean(R.styleable.AppBarLayout_seslUseCustomPadding, false);
