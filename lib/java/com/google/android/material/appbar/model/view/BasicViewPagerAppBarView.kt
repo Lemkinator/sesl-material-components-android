@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.R
 
-
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
 @RequiresApi(23)
 abstract class BasicViewPagerAppBarView @JvmOverloads constructor(
     context: Context,
@@ -32,7 +35,6 @@ abstract class BasicViewPagerAppBarView @JvmOverloads constructor(
     private val pageChangeCallback: ViewPager2.OnPageChangeCallback
 
     init {
-
         deleteAlphaAnimator = ObjectAnimator.ofFloat(null, ALPHA, 0.0f).apply {
             setDuration(deleteAlphaDuration)
             interpolator = AnimationUtils.loadInterpolator(context, R.interpolator.sesl_interpolator_0_0_1_1)
@@ -80,14 +82,10 @@ abstract class BasicViewPagerAppBarView @JvmOverloads constructor(
 
     }
 
-    fun addIndicator() {
-        indicator?.addIndicator()
-    }
+    fun addIndicator() = indicator?.addIndicator()
 
     fun initIndicator(count: Int) {
-        if (count > 1) {
-            for (i in 0 until count) addIndicator()
-        }
+        if (count > 1) { for (i in 0 until count) addIndicator() }
         viewpager?.registerOnPageChangeCallback(pageChangeCallback)
 
     }

@@ -6,8 +6,12 @@ import com.google.android.material.R
 import com.google.android.material.appbar.model.view.SuggestAppBarItemWhiteCaseView
 import kotlin.reflect.KClass
 
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
 @RequiresApi(23)
-class SuggestAppBarItemWhiteCaseModel<T : SuggestAppBarItemWhiteCaseView> private constructor(
+open class SuggestAppBarItemWhiteCaseModel<T : SuggestAppBarItemWhiteCaseView>(
     kclazz: KClass<T>,
     context: Context,
     title: String?,
@@ -20,7 +24,7 @@ class SuggestAppBarItemWhiteCaseModel<T : SuggestAppBarItemWhiteCaseView> privat
             setModel(this@SuggestAppBarItemWhiteCaseModel)
             setTitle(title)
             setCloseClickListener(closeClickListener)
-            setButtonModels(buttonListModel)
+            setButtonModules(buttonListModel)
             updateResource(context)
         }
     }
@@ -31,6 +35,22 @@ class SuggestAppBarItemWhiteCaseModel<T : SuggestAppBarItemWhiteCaseView> privat
         private var closeClickListener: OnClickListener? = null
         private var title: String? = null
 
+        @JvmOverloads
+        fun setButtons(buttons: List<ButtonModel>, buttonStyle: ButtonStyle? = null): Builder {
+            this.buttons = buttons
+            buttonStyle?.let { this.buttonStyle = it }
+            return this
+        }
+
+        fun setCloseClickListener(onClickListener: OnClickListener?): Builder {
+            this.closeClickListener = onClickListener
+            return this
+        }
+
+        fun setTitle(title: String?): Builder {
+            this.title = title
+            return this
+        }
 
         fun build(): SuggestAppBarItemWhiteCaseModel<SuggestAppBarItemWhiteCaseView> {
 
@@ -50,22 +70,6 @@ class SuggestAppBarItemWhiteCaseModel<T : SuggestAppBarItemWhiteCaseView> privat
             )
         }
 
-        @JvmOverloads
-        fun setButtons(buttons: List<ButtonModel>, buttonStyle: ButtonStyle? = null): Builder {
-            this.buttons = buttons
-            buttonStyle?.let { this.buttonStyle = it }
-            return this
-        }
-
-        fun setCloseClickListener(onClickListener: OnClickListener?): Builder {
-            this.closeClickListener = onClickListener
-            return this
-        }
-
-        fun setTitle(title: String?): Builder {
-            this.title = title
-            return this
-        }
     }
 
 }

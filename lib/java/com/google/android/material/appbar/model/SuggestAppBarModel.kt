@@ -1,20 +1,23 @@
 package com.google.android.material.appbar.model
 
 import android.content.Context
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.annotation.RequiresApi
 import com.google.android.material.R
 import com.google.android.material.appbar.model.view.SuggestAppBarView
 import org.jetbrains.annotations.NotNull
 import kotlin.reflect.KClass
 
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
 @RequiresApi(23)
-open class SuggestAppBarModel<T : SuggestAppBarView> internal constructor(
+open class SuggestAppBarModel<T : SuggestAppBarView> (
     @NotNull kclazz: KClass<T>,
     @NotNull context: Context,
-    @NotNull @JvmField val title: String?,
-    @NotNull  @JvmField val closeClickListener: OnClickListener?,
-    @JvmField val buttonListModel: ButtonListModel
+    @NotNull val title: String?,
+    @NotNull val closeClickListener: OnClickListener?,
+    val buttonListModel: ButtonListModel
 ) : AppBarModel<T>(kclazz, context) {
 
     override fun init(moduleView: T): T {
@@ -22,7 +25,7 @@ open class SuggestAppBarModel<T : SuggestAppBarView> internal constructor(
             setModel(this@SuggestAppBarModel)
             setTitle(title)
             setCloseClickListener(closeClickListener)
-            setButtonModels(buttonListModel)
+            setButtonModules(buttonListModel)
             updateResource(context)
         }
     }

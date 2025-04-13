@@ -9,14 +9,35 @@ import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.OpenThemeRe
 import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.ThemeResourceColor
 import com.google.android.material.R
 
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
 @RequiresApi(23)
 abstract class BasicViewPagerAppBarWhiteCaseView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null
-): BasicViewPagerAppBarView(context, attributeSet) {
+) : BasicViewPagerAppBarView(context, attributeSet) {
 
-        private fun getViewPagerBackgroundColorStateList(context: Context): ColorStateList {
-        val bgColor = ColorStateList.valueOf(
+    override fun updateResource(context: Context) {
+        viewpager?.backgroundTintList = getViewPagerBackgroundColorStateList(context)
+        val indicator = indicator ?: return
+
+        val offStateDrawable =
+            context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()?.apply {
+                setTint(getViewPagerIndicatorOffWithWhiteCaseColor(context))
+            }
+        indicator.defaultCircle = offStateDrawable
+
+        val onStateDrawable =
+            context.getDrawable(R.drawable.sesl_viewpager_indicator_on_off)?.mutate()?.apply {
+                setTint(getViewPagerIndicatorOnWithWhiteCaseColor(context))
+            }
+        indicator.selectCircle = onStateDrawable
+    }
+
+    private fun getViewPagerBackgroundColorStateList(context: Context): ColorStateList =
+        ColorStateList.valueOf(
             getColorInt(
                 context,
                 OpenThemeResourceColor(
@@ -28,11 +49,9 @@ abstract class BasicViewPagerAppBarWhiteCaseView @JvmOverloads constructor(
                 )
             )
         )
-        return bgColor
-    }
 
-    private fun getViewPagerIndicatorOffWithWhiteCaseColor(context: Context): Int {
-        return getColorInt(
+    private fun getViewPagerIndicatorOffWithWhiteCaseColor(context: Context): Int =
+        getColorInt(
             context,
             OpenThemeResourceColor(
                 ThemeResourceColor(
@@ -45,32 +64,13 @@ abstract class BasicViewPagerAppBarWhiteCaseView @JvmOverloads constructor(
                 )
             )
         )
-    }
 
-    private fun getViewPagerIndicatorOnWithWhiteCaseColor(context: Context): Int {
-        return getColorInt(
+    private fun getViewPagerIndicatorOnWithWhiteCaseColor(context: Context): Int =
+        getColorInt(
             context,
             OpenThemeResourceColor(
                 ThemeResourceColor(R.color.sesl_appbar_viewpager_indicator_on_with_white_case),
                 ThemeResourceColor(R.color.sesl_appbar_viewpager_indicator_on_with_white_case_for_theme)
             )
         )
-    }
-
-    override fun updateResource(context: Context) {
-        viewpager?.backgroundTintList = getViewPagerBackgroundColorStateList(context)
-
-        val indicator = indicator ?: return
-        val indicatorDrawableResId = R.drawable.sesl_viewpager_indicator_on_off
-
-        val offStateDrawable = context.getDrawable(indicatorDrawableResId)?.mutate()?.apply {
-            setTint(getViewPagerIndicatorOffWithWhiteCaseColor(context))
-        }
-        indicator.defaultCircle = offStateDrawable
-
-        val onStateDrawable = context.getDrawable(indicatorDrawableResId)?.mutate()?.apply {
-            setTint(getViewPagerIndicatorOnWithWhiteCaseColor(context))
-        }
-        indicator.selectCircle = onStateDrawable
-    }
 }

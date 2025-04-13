@@ -1,6 +1,7 @@
 package com.google.android.material.appbar.model.view
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -13,8 +14,16 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
-import androidx.appcompat.util.SeslMisc
 import androidx.appcompat.util.SeslMisc.isLightTheme
+import androidx.appcompat.util.theme.SeslThemeResourceHelper
+import androidx.appcompat.util.theme.SeslThemeResourceHelper.getDrawable
+import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.OpenThemeResourceColor
+import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.ThemeResourceColor
+import androidx.appcompat.util.theme.resource.SeslThemeResourceDrawable.OpenThemeResourceDrawable
+import androidx.appcompat.util.theme.resource.SeslThemeResourceDrawable.ThemeResourceDrawable
+import androidx.appcompat.widget.TooltipCompat
+import androidx.reflect.view.SeslViewReflector
+import androidx.reflect.widget.SeslHoverPopupWindowReflector
 import com.google.android.material.R
 import com.google.android.material.appbar.model.AppBarModel
 import com.google.android.material.appbar.model.ButtonListModel
@@ -22,33 +31,50 @@ import com.google.android.material.appbar.model.ButtonModel
 import com.google.android.material.appbar.model.SuggestAppBarModel
 import org.jetbrains.annotations.NotNull
 
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
 @RequiresApi(23)
 open class SuggestAppBarView @JvmOverloads constructor(
     @NotNull context: Context,
     @Nullable attrs: AttributeSet? = null
 ) : AppBarView(context, attrs) {
 
-    @NotNull private val buttons = mutableListOf<Button>()
+    @NotNull
+    private val buttons = mutableListOf<Button>()
     private var model: SuggestAppBarModel<out SuggestAppBarView>? = null
-    @Nullable @JvmField var bottomLayout: ViewGroup? = null
-    @Nullable @JvmField var closeButton: ImageButton? = null
-    @Nullable @JvmField var titleView: TextView? = null
+
+    @Nullable
+    var bottomLayout: ViewGroup? = null
+
+    @Nullable
+    var close: ImageButton? = null
+
+    @Nullable
+    var titleView: TextView? = null
 
     private val isLightTheme = isLightTheme(context)
 
     init {
-        inflate()
+        this.inflate()
     }
 
-    private fun inflate() {
+    override fun inflate() {
         val context = context
 
         val viewGroup = LayoutInflater.from(context).inflate(
-            R.layout.sesl_app_bar_suggest, this, false) as?  ViewGroup ?: return
+            R.layout.sesl_app_bar_suggest, this, false
+        ) as? ViewGroup ?: return
 
         viewGroup.apply {
             titleView = findViewById(R.id.suggest_app_bar_title)
-            closeButton = findViewById(R.id.suggest_app_bar_close)
+            close = findViewById<ImageButton?>(R.id.suggest_app_bar_close)?.also {
+                SeslViewReflector.semSetHoverPopupType(
+                    it,
+                    SeslHoverPopupWindowReflector.getField_TYPE_NONE()
+                );
+            }
             bottomLayout = findViewById(R.id.suggest_app_bar_bottom_layout)
         }
 
@@ -59,7 +85,10 @@ open class SuggestAppBarView @JvmOverloads constructor(
     private fun addMargin() {
         bottomLayout?.addView(
             View(context).apply {
-                layoutParams = ViewGroup.LayoutParams(resources.getDimensionPixelOffset(R.dimen.sesl_appbar_button_side_margin), MATCH_PARENT)
+                layoutParams = ViewGroup.LayoutParams(
+                    resources.getDimensionPixelOffset(com.google.android.material.R.dimen.sesl_appbar_button_side_margin),
+                    MATCH_PARENT
+                )
             })
     }
 
@@ -68,13 +97,13 @@ open class SuggestAppBarView @JvmOverloads constructor(
             text = buttonModel.text
             contentDescription = buttonModel.contentDescription
             setOnClickListener {
-                buttonModel.clickListener?.onClick()
+                buttonModel.clickListener?.onClick(it, model!!)
             }
         }
     }
 
 
-    fun setButtonModels(buttonListModel: ButtonListModel) {
+    fun setButtonModules(buttonListModel: ButtonListModel) {
         bottomLayout?.removeAllViews()
         buttons.clear()
 
@@ -86,22 +115,20 @@ open class SuggestAppBarView @JvmOverloads constructor(
         for (i in buttonModels.indices) {
             val button = generateButton(buttonModels[i], buttonStyle).apply {
                 maxWidth = resources.getDimensionPixelSize(
-                    if (buttonModels.size > 1)  R.dimen.sesl_appbar_button_max_width
-                    else R.dimen.sesl_appbar_button_max_width_multi)
+                    if (buttonModels.size > 1) R.dimen.sesl_appbar_button_max_width
+                    else R.dimen.sesl_appbar_button_max_width_multi
+                )
             }
             if (i != 0) addMargin()
             buttons.add(button)
             bottomLayout?.addView(button)
-
         }
     }
 
     fun setCloseClickListener(onClickListener: AppBarModel.OnClickListener?) {
-        closeButton?.apply {
+        close?.apply {
             visibility = if (onClickListener != null) VISIBLE else GONE
-            setOnClickListener { v ->
-                onClickListener?.onClick()
-            }
+            setOnClickListener { onClickListener?.onClick(this, model!!) }
         }
     }
 
@@ -110,34 +137,58 @@ open class SuggestAppBarView @JvmOverloads constructor(
     }
 
     override fun updateResource(@NotNull context: Context) {
-        titleView?.apply {
-            setTextColor(
-                resources.getColor(if (isLightTheme) R.color.sesl_appbar_suggest_title
-                else R.color.sesl_appbar_suggest_title_dark, context.theme))
-        }
-
-        closeButton?.setBackgroundResource(
-            getCloseRes(isLightTheme))
-    }
-
-    private fun getCloseRes(isLightMode: Boolean): Int {
-        return if (Build.VERSION.SDK_INT >= 29) {
-            if (isLightMode) R.drawable.sesl_close_button_recoil_background
-            else R.drawable.sesl_close_button_recoil_background_dark
-        }else {
-            if (isLightMode) R.drawable.sesl_ic_close else R.drawable.sesl_ic_close_dark
+        titleView?.setTextColor(getAppBarSuggestTitleColor(context))
+        close?.apply {
+            resources.getString(androidx.appcompat.R.string.sesl_appbar_suggest_dismiss)
+                .let { contentDescription = it; TooltipCompat.setTooltipText(this, it) }
+            background = getCloseDrawable(context);
         }
     }
 
-    fun setTitle(title: String?) {
-        titleView?.apply {
-            text = title
-            visibility = if (TextUtils.isEmpty(title)) GONE else VISIBLE
-        }
-    }
+    private fun getCloseDrawable(context: Context): Drawable? =
+        if (Build.VERSION.SDK_INT >= 29) getDrawable(
+            context,
+            OpenThemeResourceDrawable(
+                ThemeResourceDrawable(
+                    R.drawable.sesl_close_button_recoil_background,
+                    R.drawable.sesl_close_button_recoil_background_dark
+                ),
+                ThemeResourceDrawable(
+                    R.drawable.sesl_close_button_recoil_background_for_theme,
+                    R.drawable.sesl_close_button_recoil_background_dark_for_theme
+                )
+            )
+        ) else getDrawable(
+            context,
+            OpenThemeResourceDrawable(
+                ThemeResourceDrawable(
+                    R.drawable.sesl_ic_close,
+                    R.drawable.sesl_ic_close_dark
+                ),
+                ThemeResourceDrawable(
+                    R.drawable.sesl_ic_close_for_theme,
+                    R.drawable.sesl_ic_close_dark_for_theme
+                )
+            )
+        )
 
-    fun getButtons(): List<Button> {
-        return this.buttons
-    }
+    private fun getAppBarSuggestTitleColor(context: Context): Int =
+        SeslThemeResourceHelper.getColorInt(
+            context,
+            OpenThemeResourceColor(
+                ThemeResourceColor(
+                    R.color.sesl_appbar_suggest_title,
+                    R.color.sesl_appbar_suggest_title_dark
+                ),
+                ThemeResourceColor(
+                    R.color.sesl_appbar_suggest_title,
+                    R.color.sesl_appbar_suggest_title_dark_for_theme
+                )
+            )
+        )
 
+    fun setTitle(title: String?) =
+        titleView?.apply { text = title; visibility = if (TextUtils.isEmpty(title)) GONE else VISIBLE }
+
+    fun getButtons(): List<Button> = this.buttons
 }

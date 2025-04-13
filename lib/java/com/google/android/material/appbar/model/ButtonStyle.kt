@@ -2,9 +2,11 @@ package com.google.android.material.appbar.model
 
 import androidx.annotation.StyleRes
 
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
 data class ButtonStyle(
-    @JvmField
     @StyleRes val defStyleRes: Int,
-    @JvmField
     @StyleRes val defStyleResDark: Int
 )

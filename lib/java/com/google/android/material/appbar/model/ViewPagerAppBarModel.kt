@@ -5,11 +5,14 @@ import com.google.android.material.appbar.model.view.AppBarView
 import com.google.android.material.appbar.model.view.ViewPagerAppBarView
 import kotlin.reflect.KClass
 
-
-class ViewPagerAppBarModel<T : ViewPagerAppBarView> internal constructor(
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
+open class ViewPagerAppBarModel<T : ViewPagerAppBarView> (
     kclazz: KClass<T>,
     context: Context,
-    val appBarModels: List<AppBarModel<out AppBarView>>
+    private val appBarModels: List<AppBarModel<out AppBarView>>
 ) : AppBarModel<T>(kclazz, context) {
 
     override fun init(moduleView: T): T {
