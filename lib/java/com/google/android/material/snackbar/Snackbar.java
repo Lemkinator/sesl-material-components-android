@@ -51,6 +51,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.google.android.material.util.MaxFontScaleRatio;
+import com.google.android.material.util.SeslTextViewHelperKt;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import androidx.reflect.widget.SeslTextViewReflector;
 
@@ -407,10 +410,12 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public Snackbar setText(@NonNull CharSequence message) {
     final TextView tv = getMessageView();
     tv.setText(message);
-    semCheckMaxFontScale(tv, getContext().getResources()
-        .getDimensionPixelSize(mType == SESL_SNACKBAR_TYPE_SUGGESTION
-                ? R.dimen.sesl_design_snackbar_suggest_text_size
-                : R.dimen.design_snackbar_text_size));//sesl
+    //Sesl7
+    final int textSizeRes = mType == SESL_SNACKBAR_TYPE_SUGGESTION
+            ? R.dimen.sesl_design_snackbar_suggest_text_size
+            : R.dimen.design_snackbar_text_size;
+    SeslTextViewHelperKt.checkMaxFontScale(tv, textSizeRes, MaxFontScaleRatio.LARGE);
+    //sesl7
     return this;
   }
 
@@ -469,7 +474,8 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
       final int textSizeRes = mType == SESL_SNACKBAR_TYPE_SUGGESTION
         ? R.dimen.sesl_design_snackbar_suggest_action_text_size
         : R.dimen.sesl_design_snackbar_action_text_size;
-      semCheckMaxFontScale(tv, resources.getDimensionPixelSize(textSizeRes));
+      //Note: Checks getMessageView() instead of tv in v1.0.39-sesl7 - don't know why
+      SeslTextViewHelperKt.checkMaxFontScale(tv/*getMessageView()*/, textSizeRes, MaxFontScaleRatio.LARGE);
       //sesl7
       SeslTextViewReflector.semSetButtonShapeEnabled(tv, isShowButtonBackgroundEnabled());//sesl
       tv.setOnClickListener(
@@ -677,13 +683,6 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   }
 
   //Sesl
-  private void semCheckMaxFontScale(TextView textView, int size) {
-    final float currentFontScale = getContext().getResources().getConfiguration().fontScale;
-    if (currentFontScale > 1.2f) {
-      textView.setTextSize(0, (size / currentFontScale) * 1.2f);
-    }
-  }
-
   private boolean isShowButtonBackgroundEnabled() {
     ContentResolver contentResolver = getContext().getContentResolver();
     return contentResolver != null
