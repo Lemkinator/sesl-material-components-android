@@ -33,7 +33,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Region.Op;
 import android.graphics.Typeface;
@@ -47,15 +46,12 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.ActionBarContextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.ViewStubCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.ObjectsCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
@@ -1952,7 +1948,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       currentOffset = verticalOffset;
 
       //Sesl7
-      FrameLayout rootView = mStackViewGroup.rootView;
+      FrameLayout rootView = mStackViewGroup.getRootView();
       rootView.setTranslationY(-currentOffset/ 3f);
 
       final int insetTop = lastInsets != null ? lastInsets.getSystemWindowInsetTop() : 0;
@@ -2185,7 +2181,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private void initTitleLayout(Context context, CharSequence subtitle){
     //Sesl7
     mStackViewGroup = new StackViewGroup(new FrameLayout(context));
-    FrameLayout stackViewRoot = mStackViewGroup.rootView;
+    FrameLayout stackViewRoot = mStackViewGroup.getRootView();
     addView(stackViewRoot);
 
     final ViewGroup viewGroup = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.sesl_app_bar, stackViewRoot, false);

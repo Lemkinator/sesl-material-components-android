@@ -1,67 +1,104 @@
 package com.google.android.material.appbar
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.util.Property
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.Interpolator
 import android.widget.FrameLayout
+import com.google.android.material.R
 import java.util.Stack
 
-class StackViewGroup(@JvmField val rootView: FrameLayout) {
-    private val sceneStack: SceneStack<ViewGroup?>
+/*
+ * Original code by Samsung, all rights reserved to the original author.
+ */
+//Added in sesl7
+class StackViewGroup(val rootView: FrameLayout) {
 
-    class SceneStack<T : View?> : Stack<T>() {
-        @Synchronized
+    class SceneStack<T : View> : Stack<T>() {
         override fun pop(): T {
-            val result: T
-            try {
-                result = super.pop()
-                if (size > 0) {
-                    peek()!!.visibility = VISIBLE
-                }
-            } catch (th: Throwable) {
-                throw th
+            return super.pop().also {
+                if (isNotEmpty()) peek().visibility = View.VISIBLE
             }
-            return result
         }
-
 
         override fun push(item: T): T {
-            if (size > 0) {
-                val peek = peek()
-                peek!!.visibility = GONE
-            }
-            val push = super.push(item)
-            return push as T
-        }
-
-
-        override fun remove(element: T?): Boolean {
-            val remove = super.remove(element)
-            if (size > 0) {
-                peek()!!.visibility = VISIBLE
-            }
-            return remove
+            if (isNotEmpty()) peek().visibility = View.GONE
+            return super.push(item)
         }
     }
 
+    private val sceneStack = SceneStack<ViewGroup>()
+    private val showDuration = 200L
+    private val hideDuration = 100L
+    private val showHideInterpolator: Interpolator = AnimationUtils.loadInterpolator(rootView.context, R.interpolator.sesl_interpolator_0_0_1_1)
+    private val showAnimator: ObjectAnimator
+    private val hideAnimator: ObjectAnimator
+    private val showHideAnimator: AnimatorSet
+
     init {
-        sceneStack = SceneStack()
+        val property: Property<View, Float> = View.ALPHA
+        showAnimator = ObjectAnimator.ofFloat(null as View?, property, 0.0f, 1.0f).apply {
+            interpolator = showHideInterpolator
+            duration = showDuration
+            startDelay = hideDuration
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                    (target as? View)?.visibility = View.VISIBLE
+                }
+
+                override fun onAnimationEnd(animation: Animator) {}
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+            })
+        }
+
+        hideAnimator = ObjectAnimator.ofFloat(null as View?, property, 1.0f, 0.0f).apply {
+            interpolator = showHideInterpolator
+            duration = hideDuration
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationEnd(animation: Animator) {
+                    (target as? View)?.let { rootView.removeView(it) }
+                }
+
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+            })
+        }
+
+        showHideAnimator = AnimatorSet().apply {
+            playTogether(hideAnimator, showAnimator)
+        }
     }
 
     fun pop(): ViewGroup? {
-        val pop = if (!sceneStack.isEmpty()) sceneStack.pop() else return null
-        rootView.removeView(pop)
-        return pop
+        return if (sceneStack.isNotEmpty()) {
+            sceneStack.pop().also { rootView.removeView(it) }
+        } else null
     }
 
-    fun push(viewGroup: ViewGroup) {
-        sceneStack.push(viewGroup)
-        rootView.addView(viewGroup)
+    fun push(child: ViewGroup?) {
+        child?.let {
+            sceneStack.push(it)
+            rootView.addView(it)
+        }
     }
 
-    fun remove(viewGroup: ViewGroup) {
-        sceneStack.remove(viewGroup)
-        rootView.removeView(viewGroup)
+    fun remove(view: ViewGroup?) {
+        sceneStack.remove(view)
+        view?.let {
+            if (showHideAnimator.isRunning) {
+                showHideAnimator.cancel()
+            }
+            hideAnimator.target = it
+            showAnimator.target = sceneStack.peekOrNull()
+            showHideAnimator.start()
+        }
     }
+
+    private fun <T> Stack<T>.peekOrNull(): T? = if (isNotEmpty()) peek() else null
 }
