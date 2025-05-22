@@ -964,10 +964,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void animateViewOut(int event) {
-    if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
-      startFadeOutAnimation(event);
-    } else {
-      startSlideOutAnimation(event);
+    switch (view.getAnimationMode()){
+      case ANIMATION_MODE_FADE:
+      case ANIMATION_MODE_SUGGESTIVE:
+        startFadeOutAnimation(event);
+        break;
+      case ANIMATION_MODE_SLIDE:
+        startSlideOutAnimation(event);
+        break;
     }
   }
 
