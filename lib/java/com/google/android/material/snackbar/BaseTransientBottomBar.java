@@ -1644,16 +1644,19 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
                 sizeAnim.setStartValue(0f);
                 sizeAnim.setSpring(new SpringForce().setStiffness(50f).setDampingRatio(0.72f));
                 sizeAnim.animateToFinalPosition(1f);
+                sizeAnim.addEndListener((animation, canceled, value, velocity) -> onViewShown());
                 sizeAnim.start();
 
-                SpringAnimation translationAnim = new SpringAnimation(view, DynamicAnimation.TRANSLATION_Y);
+                //custom - ensure translationAnim wouldn't overlap/conflict
+                //with the succeeding finalTranslationAnim
                 translationAnim.cancel();
-                translationAnim.setSpring(new SpringForce().setStiffness(300f).setDampingRatio(0.72f));
-                translationAnim.animateToFinalPosition(0f);
-                translationAnim.setStartVelocity(0.1f);
-                translationAnim.start();
 
-                sizeAnim.addEndListener((animation, canceled, value, velocity) -> onViewShown());
+                SpringAnimation finalTranslationAnim = new SpringAnimation(view, DynamicAnimation.TRANSLATION_Y);
+                finalTranslationAnim.cancel();
+                finalTranslationAnim.setSpring(new SpringForce().setStiffness(300f).setDampingRatio(0.72f));
+                finalTranslationAnim.animateToFinalPosition(0f);
+                finalTranslationAnim.setStartVelocity(0.1f);
+                finalTranslationAnim.start();
               }
             }, 200L);
     });
