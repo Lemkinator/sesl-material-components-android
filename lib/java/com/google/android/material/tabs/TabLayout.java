@@ -124,9 +124,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * <p><b>SESL Variant</b></p><br>
- *
- * TabLayout provides a horizontal layout to display tabs.
+ * (SESL Variant) TabLayout provides a horizontal layout to display tabs.
  *
  * <p>Population of the tabs to display is done through {@link Tab} instances. You create tabs via
  * {@link #newTab()}. From there you can change the tab's label or icon via {@link Tab#setText(int)}

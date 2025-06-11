@@ -39,8 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <b>SESL Variant</b><br><br>
- *
+ * (SESL Variant)
  * @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationMenuView extends NavigationBarMenuView {

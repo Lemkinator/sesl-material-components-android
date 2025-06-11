@@ -94,7 +94,17 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   private static boolean mIsCoordinatorLayoutParent = false;
 
   //Sesl7
+  /**
+   * The default Snackbar type.
+   * This is the standard Snackbar with a single action.
+   */
   public static final int SESL_SNACKBAR_TYPE_DEFAULT = -1;
+  /**
+   * A snackbar type with a more prominent style and entry animation.
+   * This is typically used to suggests a simple contextual follow-up action of a previous action.
+   * <p>
+   * Note: This snackbar only supports swipe-to-dismiss gesture when it is a child of a {@link CoordinatorLayout}.
+   */
   public static final int SESL_SNACKBAR_TYPE_SUGGESTION = 0;
   @SeslSnackBarType
   private int mType = SESL_SNACKBAR_TYPE_DEFAULT;
@@ -670,6 +680,9 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     }
   }
 
+  /**
+   * Returns the {@link TextView} responsible for displaying the message in this {@link Snackbar}.
+   */
   public TextView getMessageView() {
     return getContentLayout().getMessageView();
   }

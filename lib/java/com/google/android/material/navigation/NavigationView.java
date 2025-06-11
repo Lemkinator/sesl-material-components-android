@@ -70,9 +70,7 @@ import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
- * <b>SESL Variant</b><br><br>
- *
- * Represents a standard navigation menu for application. The menu contents can be populated by a
+ * (SESL Variant) Represents a standard navigation menu for application. The menu contents can be populated by a
  * menu resource file.
  *
  * <p>NavigationView is typically placed inside a {@link androidx.drawerlayout.widget.DrawerLayout}.

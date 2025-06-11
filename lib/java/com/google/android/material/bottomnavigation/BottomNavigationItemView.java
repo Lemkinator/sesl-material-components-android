@@ -28,8 +28,7 @@ import androidx.annotation.RestrictTo;
 import com.google.android.material.navigation.NavigationBarItemView;
 
 /**
- * <b>SESL Variant</b><br><br>
- *
+ * (SESL Variant)
  * @hide For internal use only
  * */
 @RestrictTo(LIBRARY_GROUP)
