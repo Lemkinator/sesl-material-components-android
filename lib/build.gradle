@@ -1,8 +1,10 @@
 import org.gradle.internal.os.OperatingSystem
+import org.jetbrains.dokka.gradle.DokkaTask
 
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: "org.jetbrains.dokka"
 
 version = mdcLibraryVersion
 
@@ -265,24 +267,17 @@ task androidSourcesJar(type: Jar) {
 }
 
 
-/**Create github.properties in root project folder file with gpr.usr=GITHUB_USER_ID  & gpr.key=PERSONAL_ACCESS_TOKEN**/
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("../sesl-androidx/github.properties")))
-
 afterEvaluate {
   publishing {
 
     repositories {
       maven {
         name = "GitHubPackages"
-        /** Configure path of your package repository on Github
-         *  Replace GITHUB_USERID with your/organisation Github userID and REPOSITORY with the repository name on GitHub
-         */
         url = uri("https://maven.pkg.github.com/tribalfs/sesl-material-components-android")
 
         credentials {
-          username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
-          password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+          username = rootProject.ext.ghUsernameResolved
+          password = rootProject.ext.ghAccessTokenResolved
         }
       }
     }
@@ -335,4 +330,8 @@ configurations.all {
   exclude group:"androidx.customview",  module:"customview"
   exclude group:"androidx.fragment", module:"fragment"
   exclude group:"androidx.coordinatorlayout",  module:"coordinatorlayout"
+}
+
+tasks.withType(DokkaTask.class).configureEach {
+  moduleName.set("sesl.com.google.android.material")
 }

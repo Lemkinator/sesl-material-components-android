@@ -8,14 +8,7 @@ buildscript {
     //needs to be compatible with sesl.androidx
     classpath 'com.android.tools.build:gradle:8.7.1'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20"
-  }
-}
-
-allprojects {
-  repositories {
-    google()
-    mavenCentral()
-    mavenLocal()
+    classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.9.20"
   }
 }
 
@@ -64,6 +57,42 @@ ext {
   mdcLibraryVersion = '1.12.0+1.0.39-sesl7+rev4'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
+
+  githubProps = loadGithubProperties()
+  ghUsernameResolved = System.getenv('GH_USERNAME') ?:
+          project.findProperty('ghUsername') ?:
+                  (githubProps.getProperty('ghUsername'))
+  ghAccessTokenResolved = System.getenv('GH_ACCESS_TOKEN') ?:
+          project.findProperty('ghAccessToken') ?:
+                  (githubProps.getProperty('ghAccessToken'))
+}
+
+def loadGithubProperties() {
+  def props = new Properties()
+  def propsFile = rootProject.file("github.properties")
+  if (propsFile.exists()) {
+    propsFile.withInputStream { props.load(it) }
+  }
+  return props
+}
+
+ext {
+
+}
+
+allprojects {
+  repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+    maven {
+      url = uri("https://maven.pkg.github.com/tribalfs/sesl-androidx")
+      credentials {
+        username = rootProject.ext.ghUsernameResolved
+        password = rootProject.ext.ghAccessTokenResolved
+      }
+    }
+  }
 }
 
 task clean(type: Delete) {
