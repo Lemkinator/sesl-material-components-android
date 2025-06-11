@@ -9,9 +9,22 @@ import org.jetbrains.annotations.NotNull
 import kotlin.reflect.KClass
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * A model class extends [SuggestAppBarModel] and provides functionality to manage the data and
+ * behavior of a [SuggestAppBarItemView] or its subclass.
+ *
+ * @param T The view, which must extend [SuggestAppBarItemView], associated with this model
+ * @param kclazz The Kotlin class of the view.
+ * @param context The context used to access resources.
+ * @param title The title to be displayed in the app bar item. Can be null.
+ * @param onClickListener The click listener for the close button. Can be null.
+ * @param buttonListModel The model for the list of buttons to be displayed.
+ *
+ * @see SuggestAppBarModel
+ * @see SuggestAppBarItemView
+ */
 @RequiresApi(23)
 open class SuggestAppBarItemModel<T : SuggestAppBarItemView> (
     @NotNull kclazz: KClass<T>,

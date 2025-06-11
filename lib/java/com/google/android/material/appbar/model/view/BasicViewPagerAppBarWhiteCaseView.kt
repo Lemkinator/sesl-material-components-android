@@ -10,9 +10,14 @@ import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.ThemeResour
 import com.google.android.material.R
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * Abstract subclass of [BasicViewPagerAppBarView] that applies a white background and theme-specific indicator colors.
+ *
+ * @param context The context in which the view is running, providing access to resources, themes, and more.
+ * @param attributeSet The set of XML attributes used to inflate the view, or null if created programmatically.
+ */
 @RequiresApi(23)
 abstract class BasicViewPagerAppBarWhiteCaseView @JvmOverloads constructor(
     context: Context,

@@ -14,9 +14,11 @@ import androidx.appcompat.util.theme.resource.SeslThemeResourceDrawable.ThemeRes
 import com.google.android.material.R
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * A subclass of [SuggestAppBarItemView] that customizes the appearance of the item for a white background.
+ */
 @RequiresApi(23)
 open class SuggestAppBarItemWhiteCaseView(
     context: Context

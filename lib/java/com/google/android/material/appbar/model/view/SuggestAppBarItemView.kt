@@ -10,14 +10,23 @@ import androidx.appcompat.util.SeslMisc
 import androidx.appcompat.util.theme.SeslThemeResourceHelper
 import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.OpenThemeResourceColor
 import androidx.appcompat.util.theme.resource.SeslThemeResourceColor.ThemeResourceColor
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.R
 import com.google.android.material.util.MaxFontScaleRatio
 import com.google.android.material.util.checkMaxFontScale
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * A view representing a single suggestion or action page within a [ViewPager2], extending [SuggestAppBarView].
+ * This class provides functionality for handling title, close button, and bottom layout elements.
+ * It also manages resource updates based on the current theme (light or dark) and applies font scaling for accessibility.
+ *
+ * @param context The Context the view is running in, through which it can
+ *                access the current theme, resources, etc.
+ * @param attributeSet The attributes of the XML tag that is inflating the view.
+ */
 @RequiresApi(23)
 open class SuggestAppBarItemView @JvmOverloads constructor(
     context: Context,
@@ -104,5 +113,10 @@ open class SuggestAppBarItemView @JvmOverloads constructor(
         checkMaxFontScale(button, R.dimen.sesl_appbar_button_text_size, MaxFontScaleRatio.MEDIUM)
     }
 
+    /**
+     * Updates the text color and font scale of the given buttons.
+     *
+     * @param buttons The list of buttons to update.
+     */
     fun updateButtons(buttons: List<Button>) = buttons.forEach { updateButton(it) }
 }

@@ -9,15 +9,26 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.R
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * Abstract base class that extends [ViewPagerAppBarView] to provide enhanced management of paged suggestions or actions within an expanded AppBar.
+ *
+ * This class adds the following key features:
+ * - Indicator management: Handles adding, removing, and initializing the indicator that reflects the current page in the [ViewPager2].
+ * - Animated item removal: Supports removing items (pages) with optional animation. If animated, the view transitions to the next available page before removing the current one.
+ * - Indicator synchronization: Keeps the indicator state in sync with the [ViewPager2]'s current page, even during animated item removals.
+ *
+ * Subclasses must implement the [removeItem] method to define how items are actually removed from the underlying data set and view.
+ *
+ * @param context The context in which the view is running, providing access to resources, themes, and more.
+ * @param attributeSet The set of XML attributes used to inflate the view, or null if created programmatically.
+ */
 @RequiresApi(23)
 abstract class BasicViewPagerAppBarView @JvmOverloads constructor(
     context: Context,
@@ -113,7 +124,7 @@ abstract class BasicViewPagerAppBarView @JvmOverloads constructor(
         val adapter = viewpager.adapter ?: return
         if (index >= adapter.itemCount || viewpager.childCount < 0) return
 
-        val recyclerView =  (viewpager[0] as? RecyclerView) ?: return
+        val recyclerView =  (viewpager.getChildAt(0) as? RecyclerView) ?: return
         val viewHolder = recyclerView.findViewHolderForAdapterPosition(index)
         if (viewHolder == null) {
             internalRemoveItem(index)

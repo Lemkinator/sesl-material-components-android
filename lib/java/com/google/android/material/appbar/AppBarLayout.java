@@ -104,9 +104,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <b>SESL Variant</b><br><br>
- *
- * AppBarLayout is a vertical {@link LinearLayout} which implements many of the features of material
+ * (SESL Variant) AppBarLayout is a vertical {@link LinearLayout} which implements many of the features of material
  * designs app bar concept, namely scrolling gestures.
  *
  * <p>Children should provide their desired scrolling behavior through {@link

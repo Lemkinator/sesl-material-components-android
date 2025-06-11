@@ -32,9 +32,28 @@ import com.google.android.material.appbar.model.SuggestAppBarModel
 import org.jetbrains.annotations.NotNull
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * Base view class for displaying a single suggestion or action page within an expanded AppBar.
+ *
+ * This class extends [AppBarView] and is responsible for inflating and managing its own layout,
+ * including adapting its appearance (such as colors and drawables) based on the current theme (light or dark).
+ *
+ * The view is composed of the following configurable components:
+ * - A title, set via [setTitle].
+ * - An optional close button in the top-right corner, with its click listener set by [setCloseClickListener].
+ * - One or more action buttons at the bottom, configured using [setButtonModules].
+ *
+ * The data and behavior for this view are provided by an associated [SuggestAppBarModel] (or subclass),
+ * which is set via [setModel].
+ *
+ * @param context The context in which the view is running, providing access to resources, themes, etc.
+ * @param attrs The attribute set from XML used to inflate the view, or null if created programmatically.
+ *
+ * @see AppBarView
+ * @see SuggestAppBarModel
+ */
 @RequiresApi(23)
 open class SuggestAppBarView @JvmOverloads constructor(
     @NotNull context: Context,
@@ -60,6 +79,18 @@ open class SuggestAppBarView @JvmOverloads constructor(
         this.inflate()
     }
 
+    /**
+     * Inflates the layout using the `sesl_app_bar_suggest.xml` resource and adds it as a child view.
+     *
+     * This method initializes the main components of the inflated layout:
+     * - Title view
+     * - Close button
+     * - Bottom layout (for action buttons)
+     *
+     * It also disables hover popups for the close button (if present) and updates resources based on the current theme.
+     *
+     * This method is called during this view's initialization.
+     */
     override fun inflate() {
         val context = context
 
@@ -103,6 +134,15 @@ open class SuggestAppBarView @JvmOverloads constructor(
     }
 
 
+    /**
+     * Configures and displays a list of buttons in the bottom layout of this view.
+     * This method clears any existing buttons, then generates and adds new buttons based on the
+     * provided [ButtonListModel]. The appearance of the buttons (style, max width) is
+     * dynamically adjusted based on the current theme (light/dark) and the number of buttons.
+     *
+     * @param buttonListModel The [ButtonListModel] containing the data for the buttons to be displayed,
+     *                        including their text, content descriptions, click listeners, and style.
+     */
     fun setButtonModules(buttonListModel: ButtonListModel) {
         bottomLayout?.removeAllViews()
         buttons.clear()
@@ -125,6 +165,14 @@ open class SuggestAppBarView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets a click listener for the close button.
+     * If the listener is null, the close button will be hidden. Otherwise, it will be visible.
+     * When the close button is clicked, the provided listener's `onClick` method will be invoked.
+     *
+     * @param onClickListener The [AppBarModel.OnClickListener] to be invoked when the close button is clicked.
+     *                        Pass `null` to remove the listener and hide the button.
+     */
     fun setCloseClickListener(onClickListener: AppBarModel.OnClickListener?) {
         close?.apply {
             visibility = if (onClickListener != null) VISIBLE else GONE
@@ -132,6 +180,12 @@ open class SuggestAppBarView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the data model for this view.
+     * The model contains the data and logic that this view will display and interact with.
+     *
+     * @param model The [SuggestAppBarModel] to be associated with this view.
+     */
     fun setModel(model: SuggestAppBarModel<out SuggestAppBarView>) {
         this.model = model
     }
@@ -187,8 +241,21 @@ open class SuggestAppBarView @JvmOverloads constructor(
             )
         )
 
+    /**
+     * Sets the title text to be shown in the title area.
+     * If the title is null or empty, the title view will be hidden.
+     *
+     * @param title The title string to display.
+     */
     fun setTitle(title: String?) =
         titleView?.apply { text = title; visibility = if (TextUtils.isEmpty(title)) GONE else VISIBLE }
 
+    /**
+     * Retrieves the list of buttons currently displayed in this view.
+     * This list contains `Button` instances that were generated based on the [ButtonListModel]
+     * provided via [setButtonModules].
+     *
+     * @return A `List` of [Button] objects. This list may be empty if no buttons have been set.
+     */
     fun getButtons(): List<Button> = this.buttons
 }

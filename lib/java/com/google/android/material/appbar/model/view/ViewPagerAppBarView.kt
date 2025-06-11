@@ -18,9 +18,24 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.R
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * A base view class that extends [AppBarView] and embeds a [ViewPager2] to display multiple swipeable suggestion pages.
+ *
+ * Each page within the ViewPager represents a distinct suggestion, which can be individually configured and dismissed.
+ * The view’s components—including the ViewPager and its indicator—are managed by the associated
+ * [ViewPagerAppBarModel][com.google.android.material.appbar.model.ViewPagerAppBarModel].
+ *
+ * The background and indicator colors of the ViewPager can be customized via theme attributes to match the app’s appearance.
+ *
+ * @param context The context in which the view is running, providing access to resources, themes, and more.
+ * @param attributeSet The set of attributes from XML used to inflate the view, or null if created programmatically.
+ *
+ * @see AppBarView
+ * @see ViewPager2
+ * @see SeslIndicator
+ */
 @RequiresApi(23)
 open class ViewPagerAppBarView @JvmOverloads constructor(
     context: Context,
@@ -61,6 +76,15 @@ open class ViewPagerAppBarView @JvmOverloads constructor(
     }
 
 
+    /**
+     * Updates the resources of the ViewPager and its indicator based on the current theme.
+     *
+     * This method sets the background tint of the ViewPager and updates the drawables for the
+     * "on" and "off" states of the indicator circles. The colors used are retrieved from
+     * theme attributes.
+     *
+     * @param context The Context used to access theme resources and drawables.
+     */
     override fun updateResource(context: Context) {
         viewpager?.setBackgroundTintList(getViewPagerBackgroundColorStateList(context));
 

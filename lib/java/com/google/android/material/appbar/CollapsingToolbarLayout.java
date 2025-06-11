@@ -97,9 +97,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
 
 /**
- * <b>SESL Variant</b><br><br>
- *
- * CollapsingToolbarLayout is a wrapper for {@code Toolbar} which implements a collapsing app bar.
+ * (SESL Variant) CollapsingToolbarLayout is a wrapper for {@code Toolbar} which implements a collapsing app bar.
  * It is designed to be used as a direct child of a {@link AppBarLayout}. CollapsingToolbarLayout
  * contains the following features:
  *
@@ -1909,11 +1907,20 @@ public class CollapsingToolbarLayout extends FrameLayout {
       return parallaxMult;
     }
 
-    //Sesl
+    /**
+     * Sets whether the title is using a custom view or not.
+     *
+     * @param isCustom {@code true} if the title is custom, {@code false} otherwise.
+     */ //Sesl
     public void seslSetIsTitleCustom(Boolean isCustom) {
       this.isTitleCustom = isCustom;
     }
 
+    /**
+     * Checks whether the custom title view is set.
+     *
+     * @return True if the custom title view is set, false otherwise.
+     */
     public boolean seslIsTitleCustom() {
       return isTitleCustom;
     }
@@ -2184,16 +2191,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
     FrameLayout stackViewRoot = mStackViewGroup.getRootView();
     addView(stackViewRoot);
 
-    final ViewGroup viewGroup = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.sesl_app_bar, stackViewRoot, false);
-    mStackViewGroup.push(viewGroup);
+    final ViewGroup seslAppBar = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.sesl_app_bar, stackViewRoot, false);
+    mStackViewGroup.push(seslAppBar);
 
-    mTitleLayoutParent = viewGroup.findViewById(R.id.collapsing_appbar_title_layout_parent);
+    mTitleLayoutParent = seslAppBar.findViewById(R.id.collapsing_appbar_title_layout_parent);
 
     final int statusbarHeight;
     if (mTitleLayoutParent != null && (statusbarHeight = getStatusbarHeight()) > 0) {
       setBottomPadding(mTitleLayoutParent, statusbarHeight);
     }
-    mTitleLayout = findViewById(R.id.collapsing_appbar_title_layout);
+    mTitleLayout = mTitleLayoutParent.findViewById(R.id.collapsing_appbar_title_layout);
     if (mTitleEnabled) {
       mExtendedTitle = initTitle(context);
     }
@@ -2216,10 +2223,22 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
   }
 
+  /**
+   * Sets the subtitle of this view.
+   *
+   * @param resId The resource identifier of the string to be displayed as the subtitle.
+   */
   public void seslSetSubtitle(@StringRes int resId) {
     seslSetSubtitle(getContext().getText(resId));
   }
 
+  /**
+   * Sets the subtitle of this view.
+   * <p>The subtitle is displayed below the title when this view the expanded.</p>
+   * <p>If the title is not enabled, the subtitle will not shown.</p>
+   *
+   * @param subtitle The CharSequence to set as the subtitle.
+   */
   public void seslSetSubtitle(CharSequence subtitle) {
     //Sesl7
     if (mTitleEnabled && !TextUtils.isEmpty(subtitle)) {
@@ -2248,7 +2267,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
   /**
    * Sets a custom view to replace the expanded title.
    *
-   * @param view
+   * @param view The custom view to set.
+   * @param params The layout parameters for the custom view. If `params.seslIsTitleCustom()` is true,
+   *               this view will replace the expanded title and subtitle. Otherwise, it will be added
+   *               as a regular child view.
    */
   public void seslSetCustomTitleView(View view, LayoutParams params) {
     mIsCollapsingToolbarTitleCustom = params.seslIsTitleCustom();
@@ -2269,7 +2291,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
   /**
    * Sets a custom view to replace the expanded subtitle.
    *
-   * @param view
+   * <p>The custom view will be displayed below the title when the CollapsingToolbarLayout is
+   * expanded. If a custom view is set, the standard subtitle text set via
+   * {@link #seslSetSubtitle(CharSequence)} will be ignored for the expanded state.</p>
+   *
+   * <p>To remove a previously set custom subtitle view, pass {@code null} as the {@code view}
+   * parameter.</p>
+   *
+   * @param view The custom View to display as the expanded subtitle, or {@code null} to remove any
+   *             previously set custom subtitle.
+   * @see #seslSetSubtitle(CharSequence)
+   * @see #seslGetCustomSubtitle()
    */
   public void seslSetCustomSubtitle(View view) {
     if (view != null) {
@@ -2290,10 +2322,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
     requestLayout();
   }
 
+  /**
+   * Retrieves the custom subtitle view.
+   *
+   * <p>This method is used when a custom subtitle view has been set via {@link
+   * #seslSetCustomSubtitle(View)}. If a custom subtitle is not in use, this method will return
+   * null.
+   *
+   * @return The custom subtitle view, or null if a custom subtitle is not in use.
+   */
   public View seslGetCustomSubtitle() {
     return mCustomSubTitleView;
   }
 
+  /**
+   * Returns the subtitle of this view when expanded.
+   *
+   * @return The subtitle of this item or {@code null} if none has been set.
+   */
   public CharSequence getSubTitle() {
     return mExtendedSubTitle != null ? mExtendedSubTitle.getText() : null;
   }
@@ -2308,6 +2354,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
   }
 
+  /**
+   * This method differs from {@link View#getMinimumHeight()} in that it subtracts the top and
+   * bottom margins of the toolbar.
+   *
+   * @return The minimum height of the view, in pixels, less the toolbar's vertical margins.
+   */
   public int seslGetMinimumHeightWithoutMargin() {
     int verticalMargin = 0;
     if (toolbar != null) {
@@ -2327,19 +2379,30 @@ public class CollapsingToolbarLayout extends FrameLayout {
       }
     }
 
-    return ViewCompat.getMinimumHeight(this) - verticalMargin;
+    return getMinimumHeight() - verticalMargin;
   }
 
+  /**
+   * Sets whether to use custom accessibility features.
+   *
+   * @param enabled {@code true} to use custom accessibility, {@code false} otherwise.
+   */
   public void seslSetUseCustomAccessibility(boolean enabled) {
     mIsCustomAccessibility = enabled;
   }
 
+  /**
+   * Returns whether this field uses custom accessibility.
+   *
+   * @return True if this field uses custom accessibility, false otherwise.
+   */
   public boolean seslIsCustomAccessibility() {
     return mIsCustomAccessibility;
   }
 
   /**
    * Sets whether to enable or disable the fade effect of the collapsed title.
+   * This is set to {@code true} by default.
    *
    * @param enabled
    */
@@ -2347,7 +2410,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
     mFadeToolbarTitle = enabled;
   }
   //sesl
-
 
   //Sesl7
   private void setBottomPadding(View view, int bottomPadding) {
@@ -2370,6 +2432,18 @@ public class CollapsingToolbarLayout extends FrameLayout {
     return textView;
   }
 
+  /**
+   * Sets the suggestion view for the AppBarLayout.
+   *
+   * <p>The suggestion view is dedicated for displaying contextual suggestions or actions,
+   * such as quick actions, recommendations, or dynamic content relevant to the current screen.
+   * Unlike {@link #seslSetCustomTitleView(View, LayoutParams)} and {@link #seslSetCustomSubtitle(View)} (View)},
+   * which permanently replace the title and subtitle of the toolbar, the suggestion view can be made removable and
+   * is intended for transient or auxiliary content, rather than for primary titles or subtitles.
+   *
+   * @param appBarModel The AppBarModel representing the suggested view. If null, any existing
+   *     suggestion view will be removed.
+   */
   public void seslSetSuggestView(@Nullable AppBarModel<? extends AppBarView> appBarModel) {
     for (AppBarModel<?> appBarViewAppBarModel : mSuggestViewHashMap.keySet()) {
         mStackViewGroup.remove(mSuggestViewHashMap.get(appBarViewAppBarModel));

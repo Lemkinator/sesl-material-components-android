@@ -34,9 +34,7 @@ import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
 
 /**
- * <p><b>SESL Variant</b></p><br>
- *
- * The {@link Behavior} for a view that sits vertically above scrolling a view. See {@link
+ * (SESL Variant) The {@link Behavior} for a view that sits vertically above scrolling a view. See {@link
  * HeaderScrollingViewBehavior}.
  */
 abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {

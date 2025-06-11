@@ -7,9 +7,23 @@ import com.google.android.material.appbar.model.view.SuggestAppBarItemWhiteCaseV
 import kotlin.reflect.KClass
 
 /*
- * Original code by Samsung, all rights reserved to the original author.
+ * Original code by Samsung, all rights reserved to the original author. Added in sesl7
  */
-//Added in sesl7
+/**
+ * A model for the [SuggestAppBarItemWhiteCaseView].
+ * This class extends [SuggestAppBarItemModel] and is specifically designed for views
+ * that have a white background and require specific styling for their buttons and title.
+ *
+ * @param T The type of the view that this model will be associated with. Must extend [SuggestAppBarItemWhiteCaseView].
+ * @param kclazz The KClass of the view.
+ * @param context The context used to access resources.
+ * @param title The title to be displayed in the app bar item.
+ * @param onClickListener The listener for close button click events.
+ * @param buttonListModel The model for the list of buttons to be displayed.
+ *
+ * @see SuggestAppBarItemModel
+ * @see SuggestAppBarItemWhiteCaseView
+ */
 @RequiresApi(23)
 open class SuggestAppBarItemWhiteCaseModel<T : SuggestAppBarItemWhiteCaseView>(
     kclazz: KClass<T>,

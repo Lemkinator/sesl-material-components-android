@@ -33,9 +33,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.List;
 
 /**
- * <p><b>SESL Variant</b></p><br>
- *
- * The {@link Behavior} for a scrolling view that is positioned vertically below another view. See
+ * (SESL Variant) The {@link Behavior} for a scrolling view that is positioned vertically below another view. See
  * {@link com.google.android.material.appbar.HeaderBehavior}.
  */
 abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
