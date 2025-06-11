@@ -9,6 +9,7 @@ This fork hosts modified versions of the [Material Components libraries](https:/
 #### SESL6(OneUI 6) Package
 - [![latest version](https://img.shields.io/badge/sesl.com.google.android.material:material-1.12.0%2B1.0.23--sesl6%2Brev3-blue?logo=GitHub)](https://github.com/tribalfs/sesl-material-components-android/packages/2110054)
 
+## [API Documentation](https://tribalfs.github.io/sesl-material-components-android/)
 
 ## Usage
 Check usage instructions provided in [SESL(OneUI) Android Jetpack](https://github.com/tribalfs/sesl-androidx#usage).
